@@ -10,7 +10,11 @@ public class BookMarket2Controller { // 최신 수정 : 240506
 	Cart2 c_cart;
 	ConsoleView2 c_view;
 	String menuList[] = {
-		      "0. 종료", "1. 도서 정보 보기", "2. 장바구니 보기", "3. 장바구니에 도서담기", "4. 장바구니 비우기"   
+		      "0. 종료", 
+		      "1. 도서 정보 보기", 
+		      "2. 장바구니 보기", 
+		      "3. 장바구니에 도서담기", 
+		      "4. 장바구니 도서 삭제"
 		   };
 	
 	public BookMarket2Controller(BookStorage2 bookstorage, Cart2 cart, ConsoleView2 view) {
