@@ -28,4 +28,8 @@ public class Book2 {
 		return title;
 	}
 
+	public int getPrice() {
+		return price;
+	}
+
 }
