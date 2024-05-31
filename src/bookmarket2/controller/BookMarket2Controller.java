@@ -31,7 +31,8 @@ public class BookMarket2Controller { // 최신 수정 : 240506
 			"0. 종료",
 			"1. 도서 정보 추가",
 			"2. 도서 정보 삭제",
-			"3. 도서 파일 저장"
+			"3. 도서 정보 보기",
+			"4. 도서 파일 저장"
 			
 	};
 	
@@ -106,9 +107,12 @@ public class BookMarket2Controller { // 최신 수정 : 240506
 				addBook2Storage();
 				break;
 			case 2: // 고쳐야할지 고민
-				deleteBookInCart();
+				deleteBookInStorage();
 				break;
-			case 3:
+			case 3: // 고쳐야할지 고민
+				viewBookInfo();
+				break;
+			case 4:
 				saveBookList2File();
 				break;
 			case 0:
@@ -124,6 +128,28 @@ public class BookMarket2Controller { // 최신 수정 : 240506
 			// 메뉴 선택하면 해당 기능 실행
 	
 	
+	private void deleteBookInStorage() {
+		if (c_bookStorage.isEmpty()) {
+			c_view.showMessage("책 창고에 책이 없습니다.");
+			return;
+		}
+		
+		
+		// 책 창고 보여주기
+		viewBookInfo();
+
+		if (!c_bookStorage.isEmpty()) {
+					// 도서 ID 입력 받기
+			int bookId = c_view.selectBookId(c_bookStorage);
+			if (c_view.askConfirm(">> 해당 도서를 삭제하려면 yes를 입력하세요 : ", "yes")) {
+			// 해당 도서 ID의 cartItem 삭제
+				c_bookStorage.deleteItem(bookId);
+				c_view.showMessage(">> 해당 도서를 삭제했습니다.");
+			}
+		}
+		
+	}
+
 	// 0530 교수님이랑 한건데 관리자모드 2번 고쳐야할지 고민
 	private void deleteBookInCart() {
 		// 장바구니 보여주기
@@ -147,13 +173,22 @@ public class BookMarket2Controller { // 최신 수정 : 240506
 	
 	// 0530 with 교수님
 	private void addBook2Storage() {
-		// TODO Auto-generated method stub
+		c_view.showMessage("새로운 책을 추가합니다");
 		
+		// 책정보로 Book 인스턴스 만들어서 c_bookStorage에 추가
+		c_bookStorage.addBook(c_view.inputString("책 제목 : "),
+				c_view.inputString("저자 : "), c_view.inputString("출판사 : "),
+				c_view.readNumber("가격 : "));
 	}
 	
 	// 0530 with 교수님
 	private void saveBookList2File() {
-		// TODO Auto-generated method stub
+		if (c_bookStorage.isSaved()) {
+			c_view.showMessage("책 정보가 저장된 내용과 같습니다.");
+		} else {
+			c_bookStorage.saveBookList2File();
+			c_view.showMessage("책 정보를 저장하였습니다.");
+		}
 		
 	}
 

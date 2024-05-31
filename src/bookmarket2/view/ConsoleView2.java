@@ -79,7 +79,7 @@ public class ConsoleView2 {
 		int bookId;
 		boolean result;
 		do {
-			System.out.print(">> 추가할 도서의 ID를 입력하세요. : ");
+			System.out.print(">> 도서의 ID를 입력하세요. : ");
 			bookId = inputNumberWithVaildation();
 			result = bookStorage.isValidBook(bookId);
 			if (!result) {
@@ -148,8 +148,22 @@ public class ConsoleView2 {
 
 	public String inputString(String message) {
 		Scanner input = new Scanner(System.in);
-		System.out.println(message);
+		System.out.print(message);
 		return input.nextLine();
+	}
+	
+	public int readNumber(String message) {
+		if (message != null) {
+			System.out.println(message);
+		}
+		Scanner input = new Scanner(System.in);
+		try {
+			int number = input.nextInt();
+			return number;
+		} catch (Exception e) {
+			System.out.print("숫자를 입력하세요 :");
+			return readNumber(message);
+		}
 	}
 
 }

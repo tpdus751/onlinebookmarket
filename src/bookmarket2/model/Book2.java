@@ -23,6 +23,10 @@ public class Book2 {
 	public int getBookId() {
 		return bookId;
 	}
+	
+	public String getPublisher() {
+		return publisher;
+	}
 
 	public String getTitle() {
 		return title;
@@ -30,6 +34,10 @@ public class Book2 {
 
 	public int getPrice() {
 		return price;
+	}
+
+	public String getAuthor() {
+		return author;
 	}
 
 }

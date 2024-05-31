@@ -3,6 +3,7 @@ package bookmarket2.model;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,18 +12,33 @@ public class BookStorage2 {
 	ArrayList<Book2> bookList = new ArrayList<>();
 	final int MAX_QUANTITY = 10;
 	private String bookFilename = "booklist.txt";
+	private int lastId; //0531 with 교수님
+	private boolean isSaved;
 	
 	public BookStorage2() throws IOException {
 		loadBookListFromFile();		
+		generateLastId();
+		isSaved = true;
 	}
 	
+	private void generateLastId() {
+		lastId = 0;
+		for (Book2 book : bookList) {
+			int id = book.getBookId();
+			if (id > lastId) {
+				lastId = id;
+			}
+		}
+		
+	}
+
 	private void loadBookListFromFile() throws IOException {
 		FileReader fr;
 		try {
 			fr = new FileReader(bookFilename);
 			BufferedReader br = new BufferedReader(fr);
 			String idStr;
-			while ((idStr = br.readLine()) != null) {
+			while ((idStr = br.readLine()) != null && idStr.equals("")) {
 				int id = Integer.parseInt(idStr);
 				String title = br.readLine();
 				String author = br.readLine();
@@ -75,6 +91,43 @@ public class BookStorage2 {
 		}
 		return null;
 		
+	}
+
+	public boolean isEmpty() {
+		return bookList.size() == 0;
+	}
+
+	public void deleteItem(int bookId) {
+		bookList.remove(getBookById(bookId));
+		isSaved = false;
+	}
+
+	public void addBook(String title, String author, String publisher, int price) {
+		Book2 book = new Book2(++lastId, title, author, publisher, price);
+		bookList.add(book);
+		isSaved = false;
+	}
+
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void saveBookList2File() {
+		
+		try {
+			FileWriter fw = new FileWriter(bookFilename);
+			for (Book2 book : bookList) {
+				fw.write(book.getBookId() + "\n");
+				fw.write(book.getTitle() + "\n");
+				fw.write(book.getAuthor() + "\n");
+				fw.write(book.getPublisher() + "\n");
+				fw.write(book.getPrice() + "\n");
+			}
+			fw.close();
+			isSaved = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
